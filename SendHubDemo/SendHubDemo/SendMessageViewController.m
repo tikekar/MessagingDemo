@@ -7,6 +7,7 @@
 //
 
 #import "SendMessageViewController.h"
+#import "AppDelegate.h"
 
 @interface SendMessageViewController ()
 
@@ -26,15 +27,30 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    self.messageText.delegate = (id)self;
+
+    self.messageText.layer.cornerRadius=8.0f;
+    self.messageText.layer.borderColor=[[UIColor blackColor]CGColor];
+    self.messageText.layer.borderWidth= 1.0f;
+    [self.sendMessageButton setEnabled:FALSE];
+
+}
+- (IBAction)onClose:(id)sender {
+    [self dismissViewControllerAnimated:true completion:nil];
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
+
+-(NSUInteger) supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
+}
+
 - (IBAction)onSendMessage:(id)sender {
+
+    AppDelegate *app =  (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
     NSData *postData = [self getJson];
     if(postData == nil) {
@@ -44,7 +60,10 @@
     NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
 
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
-    [request setURL:[NSURL URLWithString:@"https://api.sendhub.com/v1/messages/?username=3237451658&api_key=88a04d0d9cfbeaf839d59b2d8478a7324c1b6eb1"]];
+
+    NSString *sendMsgUrl = [NSString stringWithFormat:@"%@%@%@%@", @"https://api.sendhub.com/v1/messages/?username=", app.userName, @"&api_key=", app.apiKey];
+
+    [request setURL:[NSURL URLWithString:sendMsgUrl]];
     [request setHTTPMethod:@"POST"];
     [request setValue:postLength forHTTPHeaderField:@"Content-Length"];
     [request setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
@@ -52,18 +71,19 @@
     [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
      {
 
-         if(data != nil) {
-             NSLog([[NSString alloc] initWithData:data encoding:NSUTF8StringEncoding]);
-         }
-         if (error != nil) {
-             // NSLog(@"Failed to send message: %@", error);
-             UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Failed"
-                                                             message:@"Failed to Send Message"
-                                                            delegate:self
-                                                   cancelButtonTitle:@"Okay"
-                                                   otherButtonTitles: nil];
-             
-             [alert show];
+         if(response != nil) {
+             if (response != nil && [response isKindOfClass:[NSHTTPURLResponse class]]) {
+                 NSHTTPURLResponse* newResp = (NSHTTPURLResponse*)response;
+                 if(newResp.statusCode >= 300) {
+                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Failed"
+                                                                     message:@"Failed to Send Message"
+                                                                    delegate:self
+                                                           cancelButtonTitle:@"Okay"
+                                                           otherButtonTitles: nil];
+
+                     [alert show];
+                 }
+             }
          }
      }];
 }
@@ -81,23 +101,20 @@
                                                          error:&error];
 
     if (! jsonData) {
-        NSLog(@"Got an error: %@", error);
-    } else {
-        NSString *jsonString = [[NSString alloc] initWithData:jsonData encoding:NSUTF8StringEncoding];
-        NSLog(jsonString);
+        NSLog(@"json did not get generated: %@", error);
     }
     return jsonData;
 }
 
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
-{
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
+- (void)textViewDidChange:(UITextView *)textView {
+    {
+        if([self.messageText.text isEqualToString:@""]) {
+            [self.sendMessageButton setEnabled:FALSE];
+        }
+        else {
+            [self.sendMessageButton setEnabled:TRUE];
+        }
+    }
 }
-*/
 
 @end

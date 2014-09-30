@@ -12,4 +12,8 @@
 
 @property (strong, nonatomic) UIWindow *window;
 
+@property (nonatomic) NSString *userName;
+
+@property (nonatomic) NSString *apiKey;
+
 @end

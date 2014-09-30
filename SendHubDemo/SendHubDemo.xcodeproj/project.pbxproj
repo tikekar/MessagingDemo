@@ -406,6 +406,7 @@
 				GCC_PREFIX_HEADER = "SendHubDemo/SendHubDemo-Prefix.pch";
 				INFOPLIST_FILE = "SendHubDemo/SendHubDemo-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Debug;
@@ -419,6 +420,7 @@
 				GCC_PREFIX_HEADER = "SendHubDemo/SendHubDemo-Prefix.pch";
 				INFOPLIST_FILE = "SendHubDemo/SendHubDemo-Info.plist";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 1;
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

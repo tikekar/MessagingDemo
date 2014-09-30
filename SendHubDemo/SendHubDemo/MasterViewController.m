@@ -7,11 +7,12 @@
 //
 
 #import "MasterViewController.h"
+#import "AppDelegate.h"
 
 #import "DetailViewController.h"
 
 @interface MasterViewController () {
-    NSMutableArray *_objects;
+    NSMutableArray *_objects; // for storing the contacts NSDictionary
 }
 @end
 
@@ -35,33 +36,52 @@
     [self getContacts];
 }
 
+// Get list of contacts.
 -(void) getContacts {
-    NSString *url = @"https://api.sendhub.com/v1/contacts/?username=3237451658&api_key=88a04d0d9cfbeaf839d59b2d8478a7324c1b6eb1";
+    AppDelegate *app =  (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSString *url = [NSString stringWithFormat:@"%@%@%@%@", @"https://api.sendhub.com/v1/contacts/?username=", app.userName, @"&api_key=", app.apiKey];
     NSURL *myURL = [NSURL URLWithString: url];
-    NSHTTPURLResponse *response = nil;
 
-    // Use urlrequest with timeout for slower connections.
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:myURL];
-    // Use urlrequest with timeout for slower connections.
-    NSError *e = nil;
-    NSData *contactsData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
-    if(contactsData != nil) {
-        NSDictionary *contactsDictionary = [NSJSONSerialization JSONObjectWithData:contactsData options:NSJSONReadingMutableContainers error:&e];
-        NSArray *contactsList = [contactsDictionary objectForKey:@"objects"];
 
-        for( int i=0; i < [contactsList count]; i++) {
-            NSDictionary *iContact = contactsList[i];
-            [self insertContact:iContact];
-        }
+    [NSURLConnection sendAsynchronousRequest:request queue:[NSOperationQueue new] completionHandler:^(NSURLResponse *response, NSData *data, NSError *error)
+     {
 
-    }
+         if(response != nil) {
+             if (response != nil && [response isKindOfClass:[NSHTTPURLResponse class]]) {
+                 NSHTTPURLResponse* newResp = (NSHTTPURLResponse*)response;
+                 if(newResp.statusCode >= 300) {
+                     UIAlertView *alert = [[UIAlertView alloc] initWithTitle:@"Failed"
+                                                                     message:@"Failed to get Contacts"
+                                                                    delegate:self
+                                                           cancelButtonTitle:@"Okay"
+                                                           otherButtonTitles: nil];
+                     [alert show];
+                 }
+                 else {
+                     // UI rendering has to be on main thread
+                     dispatch_async(dispatch_get_main_queue(), ^{
+                         [self populateContacts:data];
+                     });
+                 }
+             }
+         }
+     }];
 
 }
 
-- (void)didReceiveMemoryWarning
-{
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+//Populate contacts in the table view
+-(void) populateContacts : (NSData *) contactsData {
+     NSError *e = nil;
+     if(contactsData != nil) {
+         NSDictionary *contactsDictionary = [NSJSONSerialization JSONObjectWithData:contactsData options:NSJSONReadingMutableContainers error:&e];
+         NSArray *contactsList = [contactsDictionary objectForKey:@"objects"];
+
+         for( int i=0; i < [contactsList count]; i++) {
+             NSDictionary *iContact = contactsList[i];
+             [self insertContact:iContact];
+         }
+     }
 }
 
 -(void) insertContact : (NSDictionary *) contact {
@@ -71,6 +91,15 @@
     [_objects insertObject:contact atIndex:0];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+}
+
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+}
+
+-(NSUInteger) supportedInterfaceOrientations {
+    return UIInterfaceOrientationMaskPortrait;
 }
 
 #pragma mark - Table View
@@ -109,22 +138,6 @@
         // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
     }
 }
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath
-{
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
