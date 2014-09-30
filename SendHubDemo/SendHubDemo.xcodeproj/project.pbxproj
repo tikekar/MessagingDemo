@@ -23,6 +23,7 @@
 		5ED2105319DB11C0005B91FD /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5ED2102F19DB11BF005B91FD /* UIKit.framework */; };
 		5ED2105B19DB11C0005B91FD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5ED2105919DB11C0005B91FD /* InfoPlist.strings */; };
 		5ED2105D19DB11C0005B91FD /* SendHubDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5ED2105C19DB11C0005B91FD /* SendHubDemoTests.m */; };
+		5ED2106819DB2A8E005B91FD /* SendMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5ED2106719DB2A8E005B91FD /* SendMessageViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -58,6 +59,8 @@
 		5ED2105819DB11C0005B91FD /* SendHubDemoTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SendHubDemoTests-Info.plist"; sourceTree = "<group>"; };
 		5ED2105A19DB11C0005B91FD /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		5ED2105C19DB11C0005B91FD /* SendHubDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SendHubDemoTests.m; sourceTree = "<group>"; };
+		5ED2106619DB2A8E005B91FD /* SendMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendMessageViewController.h; sourceTree = "<group>"; };
+		5ED2106719DB2A8E005B91FD /* SendMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendMessageViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -127,6 +130,8 @@
 				5ED2104719DB11C0005B91FD /* DetailViewController.m */,
 				5ED2104919DB11C0005B91FD /* Images.xcassets */,
 				5ED2103219DB11C0005B91FD /* Supporting Files */,
+				5ED2106619DB2A8E005B91FD /* SendMessageViewController.h */,
+				5ED2106719DB2A8E005B91FD /* SendMessageViewController.m */,
 			);
 			path = SendHubDemo;
 			sourceTree = "<group>";
@@ -262,6 +267,7 @@
 				5ED2104519DB11C0005B91FD /* MasterViewController.m in Sources */,
 				5ED2103819DB11C0005B91FD /* main.m in Sources */,
 				5ED2104819DB11C0005B91FD /* DetailViewController.m in Sources */,
+				5ED2106819DB2A8E005B91FD /* SendMessageViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -476,6 +482,7 @@
 				5ED2106219DB11C0005B91FD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5ED2106319DB11C0005B91FD /* Build configuration list for PBXNativeTarget "SendHubDemoTests" */ = {
 			isa = XCConfigurationList;
@@ -484,6 +491,7 @@
 				5ED2106519DB11C0005B91FD /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

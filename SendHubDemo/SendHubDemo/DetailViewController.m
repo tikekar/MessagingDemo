@@ -7,6 +7,7 @@
 //
 
 #import "DetailViewController.h"
+#import "SendMessageViewController.h"
 
 @interface DetailViewController (){
     NSMutableArray *_contactDetails;
@@ -45,6 +46,12 @@
         _contactDetails[0] = [NSString stringWithFormat:@"%@ %@", @"Name:", [self.detailItem objectForKey:@"name"]];
         _contactDetails[1] = [NSString stringWithFormat:@"%@ %@", @"Number:", [self.detailItem objectForKey:@"number"]];;
     }
+}
+- (IBAction)clickSendMessage:(id)sender {
+
+    SendMessageViewController *sendMessageViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SendMessageViewController"];
+    sendMessageViewController.contactDetails = self.detailItem;
+    [self presentViewController:sendMessageViewController animated:true completion:nil];
 }
 
 - (void)viewDidLoad
@@ -91,7 +98,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"DetailCell" forIndexPath:indexPath];
-
+    cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     NSDictionary *object = _contactDetails[indexPath.row];
     cell.textLabel.text = [object description];
     return cell;
