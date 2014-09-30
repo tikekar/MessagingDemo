@@ -10,9 +10,8 @@
 #import "SendMessageViewController.h"
 
 @interface DetailViewController (){
-    NSMutableArray *_contactDetails;
+    NSMutableArray *_contactDetails; //details of the selected contact
 }
-@property (strong, nonatomic) UIPopoverController *masterPopoverController;
 - (void)configureView;
 @end
 
@@ -29,9 +28,6 @@
         [self configureView];
     }
 
-    if (self.masterPopoverController != nil) {
-        [self.masterPopoverController dismissPopoverAnimated:YES];
-    }        
 }
 
 - (void)configureView
@@ -69,22 +65,6 @@
 
 -(NSUInteger) supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
-}
-
-#pragma mark - Split view
-
-- (void)splitViewController:(UISplitViewController *)splitController willHideViewController:(UIViewController *)viewController withBarButtonItem:(UIBarButtonItem *)barButtonItem forPopoverController:(UIPopoverController *)popoverController
-{
-    barButtonItem.title = NSLocalizedString(@"Contacts", @"Contacts");
-    [self.navigationItem setLeftBarButtonItem:barButtonItem animated:YES];
-    self.masterPopoverController = popoverController;
-}
-
-- (void)splitViewController:(UISplitViewController *)splitController willShowViewController:(UIViewController *)viewController invalidatingBarButtonItem:(UIBarButtonItem *)barButtonItem
-{
-    // Called when the view is shown again in the split view, invalidating the button and popover controller.
-    [self.navigationItem setLeftBarButtonItem:nil animated:YES];
-    self.masterPopoverController = nil;
 }
 
 #pragma mark - Table View

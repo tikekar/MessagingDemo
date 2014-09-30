@@ -109,10 +109,18 @@
                                     <action selector="onClose:" destination="LQa-cy-PSx" eventType="touchUpInside" id="Hm9-yt-5Pj"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="message sent" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ZDW-B6-d4R">
+                                <rect key="frame" x="98" y="254" width="120" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
                     <connections>
+                        <outlet property="labelMessageSent" destination="ZDW-B6-d4R" id="eEm-x6-9gi"/>
                         <outlet property="messageText" destination="hhj-f7-SSP" id="7lW-vn-g7p"/>
                         <outlet property="sendMessageButton" destination="10r-NH-fw6" id="mMe-2g-f2e"/>
                     </connections>

@@ -34,6 +34,9 @@
     self.messageText.layer.borderWidth= 1.0f;
     [self.sendMessageButton setEnabled:FALSE];
 
+    [self.messageText becomeFirstResponder];
+    [self.labelMessageSent setHidden:TRUE];
+
 }
 - (IBAction)onClose:(id)sender {
     [self dismissViewControllerAnimated:true completion:nil];
@@ -49,6 +52,8 @@
 }
 
 - (IBAction)onSendMessage:(id)sender {
+
+    [self.messageText resignFirstResponder];
 
     AppDelegate *app =  (AppDelegate *)[[UIApplication sharedApplication] delegate];
 
@@ -83,8 +88,16 @@
 
                      [alert show];
                  }
+                 else {
+                     dispatch_async(dispatch_get_main_queue(), ^{
+                         [self.labelMessageSent setHidden:FALSE];
+                     });
+
+                 }
              }
+
          }
+
      }];
 }
 
@@ -92,14 +105,12 @@
     NSError *error = nil;
     NSMutableArray *phoneNumbers = [[NSMutableArray alloc] init];
     [phoneNumbers addObject:[self.contactDetails objectForKey:@"number"]];
-    // [phoneNumbers addObject:@"12"];
     NSMutableDictionary *dict = [[NSMutableDictionary alloc] init];
     [dict setObject:phoneNumbers forKey:@"contacts"];
     [dict setObject:self.messageText.text forKey:@"text"];
     NSData *jsonData = [NSJSONSerialization dataWithJSONObject:dict
                                                        options:NSJSONWritingPrettyPrinted // Pass 0 if you don't care about the readability of the generated string
                                                          error:&error];
-
     if (! jsonData) {
         NSLog(@"json did not get generated: %@", error);
     }
@@ -107,13 +118,12 @@
 }
 
 - (void)textViewDidChange:(UITextView *)textView {
-    {
-        if([self.messageText.text isEqualToString:@""]) {
-            [self.sendMessageButton setEnabled:FALSE];
-        }
-        else {
-            [self.sendMessageButton setEnabled:TRUE];
-        }
+    [self.labelMessageSent setHidden:TRUE];
+    if([self.messageText.text isEqualToString:@""]) {
+        [self.sendMessageButton setEnabled:FALSE];
+    }
+    else {
+        [self.sendMessageButton setEnabled:TRUE];
     }
 }
 

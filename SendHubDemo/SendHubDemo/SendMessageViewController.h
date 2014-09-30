@@ -13,5 +13,6 @@
 @property (nonatomic) NSDictionary *contactDetails;
 @property (weak, nonatomic) IBOutlet UITextView *messageText;
 @property (weak, nonatomic) IBOutlet UIButton *sendMessageButton;
+@property (weak, nonatomic) IBOutlet UILabel *labelMessageSent;
 
 @end

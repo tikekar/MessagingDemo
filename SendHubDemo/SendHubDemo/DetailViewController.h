@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "SendMessageViewController.h"
 
-@interface DetailViewController : UIViewController <UISplitViewControllerDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface DetailViewController : UIViewController <UITableViewDataSource, UITableViewDelegate>
 
 @property (strong, nonatomic) id detailItem;
 
