@@ -30,11 +30,6 @@
 {
     [super viewDidLoad];
 
-	// Do any additional setup after loading the view, typically from a nib.
-    self.navigationItem.leftBarButtonItem = self.editButtonItem;
-
-    UIBarButtonItem *addButton = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemAdd target:self action:@selector(insertNewObject:)];
-    self.navigationItem.rightBarButtonItem = addButton;
     self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
 
     [self getContacts];
@@ -51,7 +46,14 @@
     NSError *e = nil;
     NSData *contactsData = [NSURLConnection sendSynchronousRequest:request returningResponse:&response error:nil];
     if(contactsData != nil) {
-        NSDictionary *contactsList = [NSJSONSerialization JSONObjectWithData:contactsData options:NSJSONReadingMutableContainers error:&e];
+        NSDictionary *contactsDictionary = [NSJSONSerialization JSONObjectWithData:contactsData options:NSJSONReadingMutableContainers error:&e];
+        NSArray *contactsList = [contactsDictionary objectForKey:@"objects"];
+
+        for( int i=0; i < [contactsList count]; i++) {
+            NSDictionary *iContact = contactsList[i];
+            [self insertContact:iContact];
+        }
+
     }
 
 }
@@ -62,12 +64,11 @@
     // Dispose of any resources that can be recreated.
 }
 
-- (void)insertNewObject:(id)sender
-{
+-(void) insertContact : (NSDictionary *) contact {
     if (!_objects) {
         _objects = [[NSMutableArray alloc] init];
     }
-    [_objects insertObject:[NSDate date] atIndex:0];
+    [_objects insertObject:contact atIndex:0];
     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
     [self.tableView insertRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
 }
@@ -88,8 +89,8 @@
 {
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"Cell" forIndexPath:indexPath];
 
-    NSDate *object = _objects[indexPath.row];
-    cell.textLabel.text = [object description];
+    NSDictionary *object = _objects[indexPath.row];
+    cell.textLabel.text = [object objectForKey:@"name"];
     return cell;
 }
 
