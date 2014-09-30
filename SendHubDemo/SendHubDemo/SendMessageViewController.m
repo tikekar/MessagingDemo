@@ -62,7 +62,8 @@
         return;
     }
 
-    NSString *postLength = [NSString stringWithFormat:@"%d", [postData length]];
+    // cast it to unsigned long
+    NSString *postLength = [NSString stringWithFormat:@"%lu", [postData length]];
 
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 
