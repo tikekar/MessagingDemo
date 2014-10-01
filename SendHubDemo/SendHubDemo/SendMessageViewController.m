@@ -38,6 +38,8 @@
     [self.labelMessageSent setHidden:TRUE];
 
 }
+
+//close button click
 - (IBAction)onClose:(id)sender {
     [self dismissViewControllerAnimated:true completion:nil];
 }
@@ -51,11 +53,14 @@
     return UIInterfaceOrientationMaskPortrait | UIInterfaceOrientationMaskPortraitUpsideDown;
 }
 
+//send message button click
 - (IBAction)onSendMessage:(id)sender {
 
     [self.messageText resignFirstResponder];
 
-    AppDelegate *app =  (AppDelegate *)[[UIApplication sharedApplication] delegate];
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *username = [defaults objectForKey:@"username"];
+    NSString *apikey = [defaults objectForKey:@"apikey"];
 
     NSData *postData = [self getJson];
     if(postData == nil) {
@@ -63,11 +68,11 @@
     }
 
     // cast it to unsigned long
-    NSString *postLength = [NSString stringWithFormat:@"%lu", [postData length]];
+    NSString *postLength = [NSString stringWithFormat:@"%lu", (unsigned long)[postData length]];
 
     NSMutableURLRequest *request = [[NSMutableURLRequest alloc] init];
 
-    NSString *sendMsgUrl = [NSString stringWithFormat:@"%@%@%@%@", @"https://api.sendhub.com/v1/messages/?username=", app.userName, @"&api_key=", app.apiKey];
+    NSString *sendMsgUrl = [NSString stringWithFormat:@"%@%@%@%@", @"https://api.sendhub.com/v1/messages/?username=", username, @"&api_key=", apikey];
 
     [request setURL:[NSURL URLWithString:sendMsgUrl]];
     [request setHTTPMethod:@"POST"];

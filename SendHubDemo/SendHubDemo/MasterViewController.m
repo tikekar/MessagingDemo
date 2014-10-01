@@ -10,6 +10,7 @@
 #import "AppDelegate.h"
 
 #import "DetailViewController.h"
+#import "SettingsViewController.h"
 
 @interface MasterViewController () {
     NSMutableArray *_objects; // for storing the contacts NSDictionary
@@ -31,15 +32,51 @@
 {
     [super viewDidLoad];
 
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"Settings" style:UIBarButtonItemStylePlain target:self action:@selector(goToSettings)];
+
     self.detailViewController = (DetailViewController *)[[self.splitViewController.viewControllers lastObject] topViewController];
 
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *username = [defaults objectForKey:@"username"];
+    NSString *apikey = [defaults objectForKey:@"apikey"];
+    if(username == nil || apikey == nil) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self name:@"UserSettingsChanged" object:nil];
+
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUserSettingsChanged:) name:@"UserSettingsChanged" object:nil];
+
+        SettingsViewController *settingsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SettingsViewController"];
+        [self presentViewController:settingsViewController animated:false completion:nil];
+    }
+    else {
+        [self getContacts];
+    }
+}
+
+// This is called when settings button clicked
+-(void) goToSettings {
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"UserSettingsChanged" object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(onUserSettingsChanged:) name:@"UserSettingsChanged" object:nil];
+
+    SettingsViewController *settingsViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"SettingsViewController"];
+    [self presentViewController:settingsViewController animated:true completion:nil];
+
+}
+
+//After settings are changed and done button clicked from settings page, post this notification.
+- (void)onUserSettingsChanged:(NSNotification *)notification {
+    [_objects removeAllObjects];
+    [self.tableView reloadData];
     [self getContacts];
 }
 
 // Get list of contacts.
 -(void) getContacts {
-    AppDelegate *app =  (AppDelegate *)[[UIApplication sharedApplication] delegate];
-    NSString *url = [NSString stringWithFormat:@"%@%@%@%@", @"https://api.sendhub.com/v1/contacts/?username=", app.userName, @"&api_key=", app.apiKey];
+
+    NSUserDefaults *defaults = [NSUserDefaults standardUserDefaults];
+    NSString *username = [defaults objectForKey:@"username"];
+    NSString *apikey = [defaults objectForKey:@"apikey"];
+
+    NSString *url = [NSString stringWithFormat:@"%@%@%@%@", @"https://api.sendhub.com/v1/contacts/?username=", username, @"&api_key=", apikey];
     NSURL *myURL = [NSURL URLWithString: url];
 
     NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:myURL];
@@ -100,6 +137,12 @@
 
 -(NSUInteger) supportedInterfaceOrientations {
     return UIInterfaceOrientationMaskPortrait;
+}
+
+-(void) dealloc {
+    if(self) {
+        [[NSNotificationCenter defaultCenter] removeObserver:self];
+    }
 }
 
 #pragma mark - Table View

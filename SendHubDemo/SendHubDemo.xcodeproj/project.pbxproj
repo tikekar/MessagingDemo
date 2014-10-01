@@ -23,6 +23,7 @@
 		5ED2105B19DB11C0005B91FD /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 5ED2105919DB11C0005B91FD /* InfoPlist.strings */; };
 		5ED2105D19DB11C0005B91FD /* SendHubDemoTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 5ED2105C19DB11C0005B91FD /* SendHubDemoTests.m */; };
 		5ED2106819DB2A8E005B91FD /* SendMessageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5ED2106719DB2A8E005B91FD /* SendMessageViewController.m */; };
+		5ED210AF19DB68F7005B91FD /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5ED210AE19DB68F7005B91FD /* SettingsViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -59,6 +60,8 @@
 		5ED2105C19DB11C0005B91FD /* SendHubDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SendHubDemoTests.m; sourceTree = "<group>"; };
 		5ED2106619DB2A8E005B91FD /* SendMessageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SendMessageViewController.h; sourceTree = "<group>"; };
 		5ED2106719DB2A8E005B91FD /* SendMessageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SendMessageViewController.m; sourceTree = "<group>"; };
+		5ED210AD19DB68F7005B91FD /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		5ED210AE19DB68F7005B91FD /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +132,8 @@
 				5ED2103219DB11C0005B91FD /* Supporting Files */,
 				5ED2106619DB2A8E005B91FD /* SendMessageViewController.h */,
 				5ED2106719DB2A8E005B91FD /* SendMessageViewController.m */,
+				5ED210AD19DB68F7005B91FD /* SettingsViewController.h */,
+				5ED210AE19DB68F7005B91FD /* SettingsViewController.m */,
 			);
 			path = SendHubDemo;
 			sourceTree = "<group>";
@@ -262,6 +267,7 @@
 				5ED2103C19DB11C0005B91FD /* AppDelegate.m in Sources */,
 				5ED2104519DB11C0005B91FD /* MasterViewController.m in Sources */,
 				5ED2103819DB11C0005B91FD /* main.m in Sources */,
+				5ED210AF19DB68F7005B91FD /* SettingsViewController.m in Sources */,
 				5ED2104819DB11C0005B91FD /* DetailViewController.m in Sources */,
 				5ED2106819DB2A8E005B91FD /* SendMessageViewController.m in Sources */,
 			);
